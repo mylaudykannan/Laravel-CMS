@@ -63,6 +63,15 @@
             toolbar: 'newdocumentcustom | linkcustom | previewcustom | fullscreencustom | customImageButton | bgImage | customEleDesign | code | removeemptyline',
             valid_elements: '*[*]',
             setup: function(editor) {
+                editor.on('NodeChange', function (e) {
+                    var images = editor.getDoc().getElementsByTagName('img');
+                    for (var i = 0; i < images.length; i++) {
+                        images[i].onerror = function () {
+                            this.classList.add('image-error');
+                            this.src = 'https://placehold.co/600x400'; // Optionally, set a placeholder image or keep it blank
+                        };
+                    }
+                });
                 editor.on('change', function() {
                     tinymce.triggerSave();
                 });
